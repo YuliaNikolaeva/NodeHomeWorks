@@ -46,10 +46,18 @@ app.post('/contacts', async(req, res) => {
   return;
 });
 
+
+app.get('/contacts/:id', async (req, res) => {
+  const {id} = req.params;
+  const contactById = await contactsFunctions.getContactById(Number(id));
+  if (!contactById) return res.status(404).send('Not found');
+  res.json(contactById);
+})
+
 app.delete('/contacts/:id', async(req, res) => {
   const {id} = req.params;
   const hasIdUser = await contactsFunctions.getContactById(Number(id));
-  console.log('hasIdUser', hasIdUser)
+
 
   if (!hasIdUser) return res.status(400).send(`ERR: contact with id ${id} is absent`);
 
