@@ -1,9 +1,8 @@
 const contactsActionsFunctions = require('./contacts.js');
-// const argv = require('yargs').argv;
 const dotenv = require('dotenv');
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const contactsJSON = require('./db/contacts.json');
 const contactsFunctions = require('./contacts');
@@ -28,12 +27,11 @@ app.use(express.json());
 
 app.get('/contacts', async(req, res) => {
   const contacts = await contactsFunctions.listContacts();
-  res.setHeader('Content-Type', 'application/json');
   res.json(contacts);
 });
 
 
-app.post('/contacts', async(req, res) => {
+app.post('/contacts', async (req, res) => {
   const {name, email, phone} = req.body;
 
   const correctNewContactData = name && email && phone;
@@ -43,7 +41,6 @@ app.post('/contacts', async(req, res) => {
   const createNewContact = await contactsFunctions.addContact(name, email, phone);
 
   res.json(req.body);
-  return;
 });
 
 
@@ -64,7 +61,6 @@ app.delete('/contacts/:id', async(req, res) => {
   const deleteUser = await contactsFunctions.removeContact(Number(id));
 
   res.end();
-
 })
 
 
