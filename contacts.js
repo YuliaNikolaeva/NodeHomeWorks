@@ -28,6 +28,7 @@ function listContacts() {
     return allContacts;
 };
 
+
 function getContactById(contactId) {
     const contactById = getDataContacts()
     .then(data => JSON.parse(data).find((item) => item.id === contactId))
@@ -46,6 +47,7 @@ function removeContact(contactId) {
     .catch(err => console.log("ERROR in REMOVE contact:", err));
 };
 
+
 function addContact(name, email, phone) {
     const contactWithNew = getDataContacts()
     .then(data => {
@@ -62,13 +64,13 @@ function addContact(name, email, phone) {
     .catch(err => console.log("ERROR in ADD contact:", err));
 };
 
+
 function updateContact(contactId, updForContact) {
     const contactAfterUpdate = getDataContacts()
         .then(data =>  {
             const parsedData = JSON.parse(data);
 
             const indexContactForUpdate = parsedData.findIndex(contact => contactId === contact.id);
-
 
             parsedData[indexContactForUpdate] = {
                 ...parsedData[indexContactForUpdate],
@@ -78,7 +80,7 @@ function updateContact(contactId, updForContact) {
             fs.writeFile(contactsPath, JSON.stringify(parsedData), () => null);
             return  parsedData[indexContactForUpdate];
         })
-        .catch(err => console.log("ERROR in REMOVE contact:", err));
+        .catch(err => console.log("ERROR in UPDATE contact:", err));
     return contactAfterUpdate;
 };
 
