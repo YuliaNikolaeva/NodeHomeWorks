@@ -1,68 +1,72 @@
-const contactsActionsFunctions = require('./contacts.js');
+const PORT = process.env.PORT || 3000;
+
 const dotenv = require('dotenv');
-dotenv.config();
-
-const PORT = process.env.PORT || 4000;
-
-const contactsJSON = require('./db/contacts.json');
-const contactsFunctions = require('./contacts');
-
 const express = require('express');
+const cors = require('cors');
+
+const contactsRouter = require('./api/contacts/router');
+
+dotenv.config();
 const app = express();
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Header', '*');
-  res.setHeader('Access-Control-Allow-Method', '*');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Header', '*');
+//   res.setHeader('Access-Control-Allow-Method', '*');
+//   next();
+// });
 
+app.use(cors());
 
+app.use(express.json());
+
+app.use('/contacts', contactsRouter);
 
 app.listen(PORT, () => console.log('Server STARTED!!! Port:', PORT));
 
 
 
-app.use(express.json());
 
-app.get('/contacts', async(req, res) => {
-  const contacts = await contactsFunctions.listContacts();
-  res.json(contacts);
-});
-
-
-app.post('/contacts', async (req, res) => {
-  const {name, email, phone} = req.body;
-
-  const correctNewContactData = name && email && phone;
-
-  if (!correctNewContactData) return res.status(400).send('ERR: not correct of new contact data');
-
-  const createNewContact = await contactsFunctions.addContact(name, email, phone);
-
-  res.json(req.body);
-});
+// app.get('/contacts', async(req, res) => {
+//   const contacts = await contactsFunctions.listContacts();
+//   res.json(contacts);
+// });
 
 
-app.get('/contacts/:id', async (req, res) => {
-  const {id} = req.params;
-  const contactById = await contactsFunctions.getContactById(Number(id));
-  if (!contactById) return res.status(404).send('Not found');
-  res.json(contactById);
-})
+// app.post('/contacts', async (req, res) => {
+//   const {name, email, phone} = req.body;
 
-app.delete('/contacts/:id', async(req, res) => {
-  const {id} = req.params;
-  const hasIdUser = await contactsFunctions.getContactById(Number(id));
+//   const correctNewContactData = name && email && phone;
+
+//   if (!correctNewContactData) return res.status(400).send('ERR: not correct of new contact data');
+
+//   const createNewContact = await contactsFunctions.addContact(name, email, phone);
+
+//   res.json(req.body);
+// });
 
 
-  if (!hasIdUser) return res.status(400).send(`ERR: contact with id ${id} is absent`);
+// app.get('/contacts/:id', async (req, res) => {
+//   const {id} = req.params;
+//   const contactById = await contactsFunctions.getContactById(Number(id));
+//   if (!contactById) return res.status(404).send('Not found');
+//   res.json(contactById);
+// })
 
-  const deleteUser = await contactsFunctions.removeContact(Number(id));
+// app.delete('/contacts/:id', async(req, res) => {
+//   const {id} = req.params;
+//   const hasIdUser = await contactsFunctions.getContactById(Number(id));
 
-  res.end();
-})
 
+//   if (!hasIdUser) return res.status(400).send(`ERR: contact with id ${id} is absent`);
+
+//   const deleteUser = await contactsFunctions.removeContact(Number(id));
+
+//   res.end();
+// })
+
+
+// ---------------------------------
 
 
 
