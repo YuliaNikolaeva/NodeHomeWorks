@@ -75,15 +75,12 @@ function updateContact(contactId, updForContact) {
                 ...updForContact
             };
 
-            console.log('parsedData', parsedData)
-
-
             fs.writeFile(contactsPath, JSON.stringify(parsedData), () => null);
+            return  parsedData[indexContactForUpdate];
         })
         .catch(err => console.log("ERROR in REMOVE contact:", err));
-
     return contactAfterUpdate;
-}
+};
 
 
 module.exports = {
