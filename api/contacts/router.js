@@ -14,11 +14,11 @@ contactsRouter.post('/', async (req, res) => {
 
     const correctNewContactData = name.length && email.length && phone.length;
 
-    if (!correctNewContactData) return res.status(400).send('ERR: not correct of new contact data');
+    if (!correctNewContactData) return res.status(400).send('ERR: missing required name field');
 
     const createNewContact = await contactsFunctions.addContact(name, email, phone);
-   
-    res.json(req.body);
+
+    res.status(201).json(req.body);
 })
 
 
@@ -32,13 +32,26 @@ contactsRouter.get('/:id', async (req, res) => {
 
 contactsRouter.delete('/:id', async(req, res) => {
     const {id} = req.params;
-    const hasIdUser = await contactsFunctions.getContactById(Number(id));
+    const contactById = await contactsFunctions.getContactById(Number(id));
 
-    if (!hasIdUser) return res.status(400).send(`ERR: contact with id ${id} is absent`);
+    if (!contactById) return res.status(400).send(`ERR: Not found`);
 
-    const deleteUser = await contactsFunctions.removeContact(Number(id));
+    const deleteContact = await contactsFunctions.removeContact(Number(id));
 
     res.end();
+})
+
+contactsRouter.patch('/:id', async(req, res) => {
+    const {id} = req.params;
+    const hasIdUser = await contactsFunctions.getContactById(Number(id));
+
+    if (!hasIdUser) return res.status(400).send(`Not found`);
+
+    const updatedContact = await contactsFunctions.updateContact(Number(id), req.body);
+
+    res.status(200).json(updatedContact)
+
+    // res.json(updatedContact);
 })
 
 module.exports = contactsRouter;

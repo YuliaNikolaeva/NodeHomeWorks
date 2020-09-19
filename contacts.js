@@ -37,13 +37,6 @@ function getContactById(contactId) {
 };
 
 
-// function getContactById(contactId) {
-//     const contactById = getDataContacts()
-//     .then(data => console.log(JSON.parse(data).find((item) => item.id === contactId)))
-//     .catch(err => console.log('ERROR in GET contact BY ID:', err));
-// };
-
-
 function removeContact(contactId) {
     const visibleContacts = getDataContacts()
     .then(data =>  {
@@ -69,24 +62,32 @@ function addContact(name, email, phone) {
     .catch(err => console.log("ERROR in ADD contact:", err));
 };
 
-// function addContact(name, email, phone) {
-//     const contactWithNew = getDataContacts()
-//     .then(data => {
-//         const newContact = {
-//             id: new Date().getTime(), 
-//             name, 
-//             email, 
-//             phone,
-//         };
-//         const newArrAllContacts = [...JSON.parse(data), newContact];
-        
-//         fs.writeFile(contactsPath, JSON.stringify(newArrAllContacts), () => console.table(newArrAllContacts));
-//     })
-//     .catch(err => console.log("ERROR in ADD contact:", err));
-// };
+function updateContact(contactId, updForContact) {
+    const contactAfterUpdate = getDataContacts()
+        .then(data =>  {
+            const parsedData = JSON.parse(data);
+
+            const indexContactForUpdate = parsedData.findIndex(contact => contactId === contact.id);
+
+
+            parsedData[indexContactForUpdate] = {
+                ...parsedData[indexContactForUpdate],
+                ...updForContact
+            };
+
+            console.log('parsedData', parsedData)
+
+
+            fs.writeFile(contactsPath, JSON.stringify(parsedData), () => null);
+        })
+        .catch(err => console.log("ERROR in REMOVE contact:", err));
+
+    return contactAfterUpdate;
+}
 
 
 module.exports = {
+    updateContact,
     getDataContacts,
     listContacts,
     getContactById,
