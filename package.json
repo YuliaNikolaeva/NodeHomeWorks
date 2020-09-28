@@ -1,5 +1,5 @@
 {
-  "name": "home-work-node-01-yn",
+  "name": "home-work-node-03-yn",
   "version": "0.0.1",
   "description": "nome work 01 node",
   "main": "index.js",
@@ -18,6 +18,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "mongoose": "^5.10.6",
+    "morgan": "^1.10.0",
     "yargs": "^15.4.1"
   }
 }
