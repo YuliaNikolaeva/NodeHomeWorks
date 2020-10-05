@@ -9,11 +9,11 @@ const {
     getContactByIdController,
 } = require('../contacts/contacts.controller');
 
-const {checkAuthToken} = require('../../middlewares/auth.middleware');
+const {checkAuthTokenMiddleware} = require('../../middlewares/auth.middleware');
 
 const contactsRouter = Router();
 
-contactsRouter.get('/', checkAuthToken, getContactsController);
+contactsRouter.get('/', checkAuthTokenMiddleware, getContactsController);
 
 contactsRouter.post('/', createContactsController);
 

@@ -14,12 +14,9 @@ dotenv.config();
 const runServer = async () => {
     try {
 
-        const connectDatabaseUsers = await mongoose.connect(process.env.DB_URI_USERS, {useUnifiedTopology: true});
-        console.log('!! Database Users connection successful');
-
         
-        // const connectDatabase = await mongoose.connect(process.env.DB_URI, {useUnifiedTopology: true});
-        // console.log('! Database connection successful');
+        const connectDatabase = await mongoose.connect(process.env.DB_URI, {useUnifiedTopology: true});
+        console.log('! Database connection successful');
 
 
 
@@ -32,7 +29,7 @@ const runServer = async () => {
         app.use('/auth', authRouter);
 
 
-        app.listen(PORT, () => console.log('!!! Server STARTED Port:', PORT));
+        app.listen(PORT, () => console.log('!! Server STARTED Port:', PORT));
     } catch (err) {
         console.log('??? ERR connect Database:', err);
         process.exit(1);

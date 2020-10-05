@@ -5,6 +5,9 @@ const {
     createVerificationToken,
 } = require('../../services/token.service');
 
+
+const { json } = require('express');
+
 const registrationController = async (req, res, next) => {
     try {
         const {body} = req;
@@ -19,6 +22,7 @@ const registrationController = async (req, res, next) => {
             "user": {
                 "email": body.email,
                 "subscription": newUser.subscription,
+                "pass": newUser.password
             }
         });
     } catch (err) {
@@ -50,12 +54,19 @@ const loginController = async (req, res, next) => {
 
         const accessToken = await createVerificationToken({id: foundUser._id});
 
-        res.status(200).send({
-            "token": accessToken,
+        res.json({
+            accessToken,
+            email: foundUser.email,
+            subscription: foundUser.subscription,
+            id: foundUser._id,
+        });
+
+        res.status(200).json({
             "user": {
                 "email": body.email,
                 "subscription": foundUser.subscription,
-            }
+             },
+            "token": accessToken,
         });
     } catch (err) {
         next(err)

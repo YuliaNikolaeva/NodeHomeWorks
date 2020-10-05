@@ -1,4 +1,4 @@
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const createVerificationToken = async payload => {
     return await jwt.sign(payload, process.env.ACCESS_KEY);
