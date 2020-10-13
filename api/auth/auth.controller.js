@@ -61,7 +61,13 @@ const loginController = async (req, res, next) => {
         };
 
         const accessToken = await createVerificationToken({id: foundUser._id});
-        foundUser.token = accessToken;
+
+        console.log(111, foundUser._id)
+
+        const addToken = await UserModel.findByIdAndUpdate(foundUser._id, {token: accessToken}, {new: true})
+        
+        // foundUser.token = accessToken;
+        // console.log(111, foundUser.token)
 
         res.json({
             token: foundUser.token,
@@ -75,10 +81,18 @@ const loginController = async (req, res, next) => {
     };
 };
 
+
 const getCurrentUserController = async (req, res, next) => {
     try {
         const {email} = req.body;
         const foundUser = await UserModel.findOne({email});
+
+        if(!foundUser) {
+            return res.status(401).json(
+                {"message": "Not authorized"}
+            );
+        };
+
         const currentUser = await UserModel.findById(foundUser._id);
         res.json(currentUser);
     } catch (err) {
@@ -86,18 +100,23 @@ const getCurrentUserController = async (req, res, next) => {
     };
 };
 
+
 const logoutController = async (req, res, next) => {
     try {
         const {email} = req.body;
         const foundUserByEmail = await UserModel.findOne({email});
+
         const currentUser = await UserModel.findById(foundUserByEmail._id);
 
-        console.log(111, foundUserByEmail);
-        console.log(222, foundUserByEmail.token);
-        console.log(333, foundUserByEmail.accessToken);
+        if(!currentUser.token) {
+            return res.status(401).json(
+                {"message": "Not authorized"}
+            );
+        };
 
-        // currentUser.token = "";
-        res.send('UHHHUUUU!!!!')
+        await UserModel.findByIdAndUpdate(currentUser._id, {token: ''}, {new: true})
+
+        res.status(204).send('Token deleted!')
     } catch (err) {
         next(err);
     };

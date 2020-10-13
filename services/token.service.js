@@ -10,6 +10,7 @@ const verifyToken = async token => {
     return await jwt.verify(parsedToken, process.env.ACCESS_KEY);
 };
 
+
 module.exports = {
     createVerificationToken,
     verifyToken,
