@@ -14,7 +14,6 @@ const getCurrentUserController = async (req, res, next) => {
             email: findUserByEmail.email,
             subscription: findUserByEmail.subscription,
         });
-
     } catch (err) {
         next({message: err});
     };

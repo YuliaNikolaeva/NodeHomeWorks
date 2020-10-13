@@ -62,12 +62,7 @@ const loginController = async (req, res, next) => {
 
         const accessToken = await createVerificationToken({id: foundUser._id});
 
-        console.log(111, foundUser._id)
-
         const addToken = await UserModel.findByIdAndUpdate(foundUser._id, {token: accessToken}, {new: true})
-        
-        // foundUser.token = accessToken;
-        // console.log(111, foundUser.token)
 
         res.json({
             token: foundUser.token,
@@ -114,9 +109,9 @@ const logoutController = async (req, res, next) => {
             );
         };
 
-        await UserModel.findByIdAndUpdate(currentUser._id, {token: ''}, {new: true})
+       const deleteToken = await UserModel.findByIdAndUpdate(currentUser._id, {token: ''}, {new: true})
 
-        res.status(204).send('Token deleted!')
+        res.status(204).json({"message": "No Content"})
     } catch (err) {
         next(err);
     };

@@ -17,7 +17,6 @@ const authRouter = Router();
 
 authRouter.post('/register', RegistrationAndLoginValidatorMiddleware,registrationController);
 authRouter.post('/login', RegistrationAndLoginValidatorMiddleware, loginController);
-
 authRouter.post('/logout', logoutController);
 
 module.exports = authRouter;
