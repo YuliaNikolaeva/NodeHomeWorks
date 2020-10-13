@@ -15,7 +15,7 @@ const contactsRouter = Router();
 
 contactsRouter.get('/', checkAuthTokenMiddleware, getContactsController);
 
-contactsRouter.post('/', createContactsController);
+contactsRouter.post('/', checkAuthTokenMiddleware, createContactsController);
 
 contactsRouter.patch('/', updateContactController);
 

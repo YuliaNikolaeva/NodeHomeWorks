@@ -53,67 +53,50 @@ const loginController = async (req, res, next) => {
         };
 
         const accessToken = await createVerificationToken({id: foundUser._id});
+        foundUser.token = accessToken;
 
         res.json({
-            accessToken,
+            token: foundUser.token,
             email: foundUser.email,
             subscription: foundUser.subscription,
             id: foundUser._id,
-        });
-
-        res.status(200).json({
-            "user": {
-                "email": body.email,
-                "subscription": foundUser.subscription,
-             },
-            "token": accessToken,
         });
     } catch (err) {
         next(err)
     };
 };
 
+const getCurrentUserController = async (req, res, next) => {
+    try {
+        const {email} = req.body;
+        const foundUser = await UserModel.findOne({email});
+        const currentUser = await UserModel.findById(foundUser._id);
+        res.json(currentUser);
+    } catch (err) {
+        next(err);
+    };
+};
 
+const logoutController = async (req, res, next) => {
+    try {
+        const {email} = req.body;
+        const foundUserByEmail = await UserModel.findOne({email});
+        const currentUser = await UserModel.findById(foundUserByEmail._id);
 
+        console.log(111, foundUserByEmail);
+        console.log(222, foundUserByEmail.token);
+        console.log(333, foundUserByEmail.accessToken);
 
-// const loginController = async (req, res, next) => {
-//     try {
-//         const {body} = req;
-//         const {email, password} = body;
-
-//         const findUserByEmail = await findUser(email);
-
-//         console.log(111, findUserByEmail);
-
-//         if(!findUserByEmail) {
-//             return res.status(404).json(
-//                 {"message": "You have never registered here"}
-//             );
-//         };
-
-//         const isPassEqual = await bcrypt.compare(password, findUserByEmail.password);
-
-//         if(!isPassEqual) {
-//             return res.status(401).json(
-//                 {"message": "Email or password is wrong"}
-//             );
-//         };
-//         res.send({
-//             "token": findUserByEmail.token,
-//             "user": {
-//                 "email": body.email,
-//                 "subscription": findUserByEmail.subscription,
-//             }
-//         });
-
-
-
-//     } catch (err) {
-//         next(err)
-//     };
-// };
+        // currentUser.token = "";
+        res.send('UHHHUUUU!!!!')
+    } catch (err) {
+        next(err);
+    };
+}
 
 module.exports = {
     registrationController,
     loginController,
+    getCurrentUserController,
+    logoutController,
 };

@@ -9,12 +9,6 @@ const userSchema = new mongoose.Schema({
         default: "free"
     },
     token: String,
-
-    // token: {
-    //     type: String,
-    //     default: "exampleToken",
-    // },
-    
 }, {versionKey: false});
 
 const UserModel = mongoose.model('User', userSchema);
