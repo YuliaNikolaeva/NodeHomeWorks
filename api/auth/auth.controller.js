@@ -11,6 +11,14 @@ const { json } = require('express');
 const registrationController = async (req, res, next) => {
     try {
         const {body} = req;
+        const {email} = body;
+
+        const findUserByMail = await UserModel.findOne({email});
+        if(findUserByMail) {
+            return res.status(409).send({
+                message: "Email in use"
+            });
+        };
 
         const hashedPass = await bcrypt.hash(body.password, Number(process.env.SALT));
 
@@ -56,7 +64,6 @@ const loginController = async (req, res, next) => {
         foundUser.token = accessToken;
 
         res.json({
-            accessToken,
             token: foundUser.token,
             email: foundUser.email,
             subscription: foundUser.subscription,
