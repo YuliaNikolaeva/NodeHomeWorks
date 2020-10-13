@@ -9,6 +9,7 @@ const {
     getContactByIdController,
 } = require('../contacts/contacts.controller');
 
+
 const {checkAuthTokenMiddleware} = require('../../middlewares/auth.middleware');
 
 const contactsRouter = Router();

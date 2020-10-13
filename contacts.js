@@ -58,7 +58,7 @@ function addContact(name, email, phone) {
             phone,
         };
         const newArrAllContacts = [...JSON.parse(data), newContact];
-        
+
         fs.writeFile(contactsPath, JSON.stringify(newArrAllContacts), () => null);
     })
     .catch(err => console.log("ERROR in ADD contact:", err));
