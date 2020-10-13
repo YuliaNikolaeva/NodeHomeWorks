@@ -22,5 +22,5 @@ const validationMiddleware = (schema) => async (req, res, next) => {
 };
 
 module.exports = {
-    RegistrationValidatorMiddleware: validationMiddleware(RegistrationSchema),
+    RegistrationAndLoginValidatorMiddleware: validationMiddleware(RegistrationSchema),
 };

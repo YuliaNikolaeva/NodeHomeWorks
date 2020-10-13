@@ -14,6 +14,7 @@ const registrationController = async (req, res, next) => {
         const {email} = body;
 
         const findUserByMail = await UserModel.findOne({email});
+
         if(findUserByMail) {
             return res.status(409).send({
                 message: "Email in use"
@@ -47,7 +48,7 @@ const loginController = async (req, res, next) => {
 
         if(!foundUser) {
             return res.status(404).json(
-                {"message": "You have never registered here"}
+                {"message": "Email or password is wrong"}
             );
         };
 
@@ -64,9 +65,10 @@ const loginController = async (req, res, next) => {
 
         res.json({
             token: foundUser.token,
-            email: foundUser.email,
-            subscription: foundUser.subscription,
-            id: foundUser._id,
+            user: {
+                email: foundUser.email,
+                subscription: foundUser.subscription,
+            },
         });
     } catch (err) {
         next(err)
