@@ -56,6 +56,7 @@ const loginController = async (req, res, next) => {
         foundUser.token = accessToken;
 
         res.json({
+            accessToken,
             token: foundUser.token,
             email: foundUser.email,
             subscription: foundUser.subscription,
