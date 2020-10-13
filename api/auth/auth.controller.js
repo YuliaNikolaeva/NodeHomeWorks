@@ -30,7 +30,6 @@ const registrationController = async (req, res, next) => {
             "user": {
                 "email": body.email,
                 "subscription": newUser.subscription,
-                "pass": newUser.password
             }
         });
     } catch (err) {

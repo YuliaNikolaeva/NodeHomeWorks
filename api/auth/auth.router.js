@@ -9,9 +9,13 @@ const {
     checkAuthTokenMiddleware,
 } = require ('../../middlewares/auth.middleware');
 
+const {
+    RegistrationValidatorMiddleware
+} = require('./auth.validator');
+
 const authRouter = Router();
 
-authRouter.post('/register', registrationController);
+authRouter.post('/register', RegistrationValidatorMiddleware,registrationController);
 authRouter.post('/login', loginController);
 
 authRouter.post('/logout', logoutController);
