@@ -18,9 +18,7 @@ const runServer = async () => {
     try {
         const connectDatabase = await mongoose.connect(process.env.DB_URI, {useUnifiedTopology: true});
         console.log('! Database connection successful');
-
-
-
+      
         const app = express();
         app.use(cors());
         app.use(morgan('dev'));
