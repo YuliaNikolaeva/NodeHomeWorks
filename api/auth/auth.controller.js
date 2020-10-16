@@ -1,9 +1,23 @@
 const UserModel = require('../users/users.model');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+
+const HOST = 'localhost:3000/';
+const MINIFIED_DIR = 'public/images';
+const DRAFT_DIR = 'tmp/';
 
 const {
     createVerificationToken,
 } = require('../../services/token.service');
+
+const {
+    generateAvatar,
+} = require('../../services/avatarGenerator');
+
+const {
+    imageMinimizer,
+} = require('../../services/imageMinimizer');
+
 
 
 const { json } = require('express');
@@ -27,6 +41,21 @@ const registrationController = async (req, res, next) => {
             ...body,
             password: hashedPass,
         });
+
+        const generatedAvatar = await generateAvatar(newUser._id);
+
+        await imageMinimizer(newUser._id);
+        fs.unlink(`${DRAFT_DIR}${newUser._id}.${generatedAvatar.format}`, 
+        function(err){
+            if(err) throw err;
+        });
+
+
+        await UserModel.findByIdAndUpdate(
+            newUser._id, 
+            {avatarURL: `${HOST}${MINIFIED_DIR}${newUser._id}.${generatedAvatar.format}`}, {new: true}
+        );
+
         res.status(201).send({
             "user": {
                 "email": body.email,

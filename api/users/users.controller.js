@@ -39,7 +39,6 @@ const uploadAvatarController = async (req, res, next) => {
 
         await UserModel.findByIdAndUpdate(userId, {avatar: file.path}, {new: true})
 
-// --------------------------------
         res.send(avatarURL);
     } catch (err) {
         next({message: err});

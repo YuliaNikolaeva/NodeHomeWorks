@@ -14,10 +14,11 @@ const generateAvatar = async (userId) => {
     })
     
     const variant = 'female';
-    const image = await avatar.generate('email@example.com', variant)
+    const image = await avatar.generate(userId, variant)
 
-    await image.png().toFile(`${directory}${userId}.png`);
+   return await image.png().toFile(`${directory}${userId}.png`);
 }
 
-
-generateAvatar(5);
+module.exports = {
+    generateAvatar,
+  };
