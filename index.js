@@ -22,9 +22,7 @@ const runServer = async () => {
         app.use(cors());
         app.use(morgan('dev'));
         app.use(express.json());
-
         app.use(express.static(path.resolve(__dirname, 'public')));
-
         app.use('/contacts', contactsRouter);
         app.use('/auth', authRouter);
         app.use('/users', usersRouter);

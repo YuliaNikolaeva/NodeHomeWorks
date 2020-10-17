@@ -18,8 +18,6 @@ const {
     imageMinimizer,
 } = require('../../services/imageMinimizer');
 
-
-
 const { json } = require('express');
 
 const registrationController = async (req, res, next) => {
@@ -55,7 +53,6 @@ const registrationController = async (req, res, next) => {
             newUser._id, 
             {avatarURL: `${HOST}${MINIFIED_DIR}${newUser._id}.${generatedAvatar.format}`}, {new: true}
         );
-
         res.status(201).send({
             "user": {
                 "email": body.email,
