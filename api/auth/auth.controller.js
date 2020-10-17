@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 
 const HOST = 'localhost:3000/';
-const MINIFIED_DIR = 'public/images';
+const MINIFIED_DIR = 'images/';
 const DRAFT_DIR = 'tmp/';
 
 const {
