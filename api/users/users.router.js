@@ -13,7 +13,6 @@ const {
     avatarUploaderMiddleware
 } = require ('../../middlewares/fileUploader.middleware');
 
-
 const usersRouter = Router();
 
 usersRouter.get("/current", checkAuthTokenMiddleware, getCurrentUserController);
