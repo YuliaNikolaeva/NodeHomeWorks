@@ -2,11 +2,13 @@ const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-jpegtran');
 const imageminPngquant = require('imagemin-pngquant');
 
-const imageMinimizer = async (userId) => {
-    const MINIFIED_DIR = 'public/images';
+const {
+    createPathDestination
+  } = require('../config');
 
+const imageMinimizer = async (userId) => {
     await imagemin(['tmp'], {
-        destination: MINIFIED_DIR,
+        destination: createPathDestination(),
         plugins: [
             imageminJpegtran(),
             imageminPngquant({
@@ -15,7 +17,6 @@ const imageMinimizer = async (userId) => {
         ]
     });
 };
-// imageMinimizer('5f89e5df9212c03dcc04c1e9');
 
 module.exports = {
     imageMinimizer,

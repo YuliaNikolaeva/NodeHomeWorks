@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const {
+    createPathToDefaultAvatar,
+  } = require('../../config');
+
+
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
@@ -12,7 +17,7 @@ const userSchema = new mongoose.Schema({
     avatarURL: {
         type: String,
         required: true,
-        default: '../public/images/default_avatar.png'
+        default: createPathToDefaultAvatar()
     }
 }, {versionKey: false});
 

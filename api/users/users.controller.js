@@ -1,6 +1,9 @@
 const PORT = process.env.PORT || 3000;
 const UserModel = require('./users.model');
-const bcrypt = require('bcrypt');
+
+const {
+    createPathToAvatar,
+  } = require('../../config');
 
 
 const getCurrentUserController = async (req, res, next) => {
@@ -35,7 +38,7 @@ const uploadAvatarController = async (req, res, next) => {
             );
         };
 
-        const avatarURL = `http://localhost:${PORT}/images/${file.filename}`;
+        const avatarURL = createPathToAvatar(file.filename);
 
         await UserModel.findByIdAndUpdate(userId, {avatarURL: avatarURL}, {new: true});
 

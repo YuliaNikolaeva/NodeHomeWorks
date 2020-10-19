@@ -2,9 +2,10 @@ const UserModel = require('../users/users.model');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
-const HOST = 'localhost:3000/';
-const MINIFIED_DIR = 'images/';
-const DRAFT_DIR = 'tmp/';
+const {
+    createFullPathDraft,
+    createFullPatToMinifiedImg,
+  } = require('../../config');
 
 const {
     createVerificationToken,
@@ -18,9 +19,6 @@ const {
     imageMinimizer,
 } = require('../../services/imageMinimizer');
 
-
-
-const { json } = require('express');
 
 const registrationController = async (req, res, next) => {
     try {
@@ -45,7 +43,7 @@ const registrationController = async (req, res, next) => {
         const generatedAvatar = await generateAvatar(newUser._id);
 
         await imageMinimizer(newUser._id);
-        fs.unlink(`${DRAFT_DIR}${newUser._id}.${generatedAvatar.format}`, 
+        await fs.unlink(createFullPathDraft(newUser._id, generatedAvatar.format),
         function(err){
             if(err) throw err;
         });
@@ -53,7 +51,7 @@ const registrationController = async (req, res, next) => {
 
         await UserModel.findByIdAndUpdate(
             newUser._id, 
-            {avatarURL: `${HOST}${MINIFIED_DIR}${newUser._id}.${generatedAvatar.format}`}, {new: true}
+            {avatarURL: createFullPatToMinifiedImg(newUser._id, generatedAvatar.format)}, {new: true}
         );
 
         res.status(201).send({

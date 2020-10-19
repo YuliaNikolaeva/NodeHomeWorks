@@ -1,7 +1,10 @@
 const AvatarGenerator = require('avatar-generator');
 const path = require("path");
-const directory = './tmp/';
 const sprites = '../node_modules/avatar-generator/img';
+
+const {
+    createPathDraft
+  } = require('../config');
 
 const generateAvatar = async (userId) => {
     const avatar = new AvatarGenerator({
@@ -16,7 +19,7 @@ const generateAvatar = async (userId) => {
     const variant = 'female';
     const image = await avatar.generate(userId, variant)
 
-   return await image.png().toFile(`${directory}${userId}.png`);
+    return await image.png().toFile(createPathDraft(userId));
 }
 
 module.exports = {
