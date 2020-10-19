@@ -1,10 +1,23 @@
 const UserModel = require('../users/users.model');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+
+const {
+    createFullPathDraft,
+    createFullPatToMinifiedImg,
+  } = require('../../config');
 
 const {
     createVerificationToken,
 } = require('../../services/token.service');
 
+const {
+    generateAvatar,
+} = require('../../services/avatarGenerator');
+
+const {
+    imageMinimizer,
+} = require('../../services/imageMinimizer');
 
 const { json } = require('express');
 
@@ -27,6 +40,20 @@ const registrationController = async (req, res, next) => {
             ...body,
             password: hashedPass,
         });
+
+        const generatedAvatar = await generateAvatar(newUser._id);
+
+        await imageMinimizer(newUser._id);
+        await fs.unlink(createFullPathDraft(newUser._id, generatedAvatar.format),
+        function(err){
+            if(err) throw err;
+        });
+
+
+        await UserModel.findByIdAndUpdate(
+            newUser._id, 
+            {avatarURL: createFullPatToMinifiedImg(newUser._id, generatedAvatar.format)}, {new: true}
+        );
         res.status(201).send({
             "user": {
                 "email": body.email,
